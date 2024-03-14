@@ -1,0 +1,23 @@
+# https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/
+
+-Port forward to resource:
+
+# For Deployment
+kubectl port-forward deployment/<name_pod> <port_external>:<port_internal>
+EX:
+  kubectl port-forward deployment/nginx-deployment0813jkh12 8080:80
+
+# For Pod
+kubectl port-forward pod/<name_pod> <port_external>:<port_internal>
+EX:
+  kubectl port-forward pod/nginx 8188:80
+
+# For Replicaset
+kubectl port-forward replicaset/<name_pod> <port_external>:<port_internal>
+EX:
+  kubectl port-forward replicaset/mongo-F7653ig1b2h 28015:27017
+
+# For Service
+kubectl port-forward service/<name_pod> <port_external>:<port_internal>
+EX:
+  kubectl port-forward service/mongo 28015:27017 
