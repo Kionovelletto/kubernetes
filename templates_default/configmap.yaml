@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: <name_configmap>
+  labels:
+    app: <label_app>
+data:
+  variavel1: valor1
+  variavel2: valor2
+  variavel3: valor3

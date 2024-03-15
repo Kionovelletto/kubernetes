@@ -1,0 +1,14 @@
+node {
+    stage('Checkout') {
+        echo 'Iniciando Clone do Repositório'
+        sh 'ls -ltra'
+    }
+    stage('Build') {
+        echo 'Iniciando build'
+        sh 'ls -ltra'
+    }    
+    stage('Deploy') {
+        echo 'Iniciando deploy'
+        sh 'ls -ltra'
+     }
+}     

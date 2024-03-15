@@ -5,7 +5,7 @@
 # For Deployment
 kubectl port-forward deployment/<name_pod> <port_external>:<port_internal>
 EX:
-  kubectl port-forward deployment/nginx-deployment0813jkh12 8080:80
+   code
 
 # For Pod
 kubectl port-forward pod/<name_pod> <port_external>:<port_internal>

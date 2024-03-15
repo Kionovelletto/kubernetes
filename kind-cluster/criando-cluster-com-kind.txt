@@ -1,0 +1,22 @@
+# URL https://kind.sigs.k8s.io/docs/user/quick-start/
+
+# PRECISAR TER O DOCKER INSTALADO, POIS O KIND VAI RODAR O CLUSTER EM DOCKER
+
+# CREATE CLUSTER
+kind create cluster --name kind-2
+
+# INTERACTING YOUR CLUSTER
+kind get clusters
+
+kubectl cluster-info --context kind-kind-2
+
+# DELETE CLUSTER
+kind delete cluster
+
+# LOADING AN IMAGE  INTO YOUR CLUSTER:
+docker build -t my-custom-image:unique-tag ./my-image-dir
+kind load docker-image my-custom-image:unique-tag
+kubectl apply -f my-manifest-using-my-image:unique-tag
+
+#  BUILDING IMAGES
+kind build node-image /path/to/kubernetes/source
