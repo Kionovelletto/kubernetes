@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Nginx no Kubernetes</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        p {
+            margin-bottom: 1.5rem;
+        }
+        .info {
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bem-vindo ao Nginx no Kubernetes</h1>
+        <p>Esta página está sendo servida por um pod Nginx rodando no Kubernetes.</p>
+        <div class="info">
+            <p><strong>Pod ID:</strong> <span id="podId">Carregando...</span></p>
+            <p><strong>Node:</strong> <span id="nodeName">Carregando...</span></p>
+        </div>
+        <p>Explore mais sobre como o Kubernetes pode ajudar na orquestração de containers e na escalabilidade de aplicações.</p>
+        <a href="https://kubernetes.io/docs/home/" class="cta-button" target="_blank">Saiba mais sobre Kubernetes</a>
+    </div>
+
+    <script>
+        // Simulando a obtenção de informações do pod
+        setTimeout(() => {
+            document.getElementById('podId').textContent = 'nginx-' + Math.random().toString(36).substr(2, 5);
+            document.getElementById('nodeName').textContent = 'node-' + Math.floor(Math.random() * 5 + 1);
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+1. Definir o PersistentVolume (PV)
+Este recurso define um volume persistente que pode ser usado por um ou mais pods:
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /home/caio.novelletto/Downloads/study_kio/kubernetes/nginx/html
+
+2. Definir o PersistentVolumeClaim (PVC)
+Este recurso solicita o volume persistente. O pod utiliza o PVC para acessar o volume:
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+3. Criar o Pod utilizando o PVC
+O pod vai montar o volume via o PersistentVolumeClaim, garantindo que o volume persista após a remoção do pod:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: nginx-storage
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: nginx-storage
+    persistentVolumeClaim:
+      claimName: nginx-pvc
+
+#### Explicação dos componentes:
+1. PersistentVolume (PV):
+Define o volume físico que será montado. Neste exemplo, ele continua a usar o diretório local /home/caio.novelletto/Downloads/study_kio/kubernetes/nginx/html como armazenamento.
+
+1.1. PersistentVolumeClaim (PVC):
+Requisita o volume persistente para ser usado pelo pod. O pod utiliza o PVC para montar o volume.
+
+1.2. Pod:
+O pod monta o volume em /usr/share/nginx/html, o diretório padrão do NGINX para servir arquivos estáticos.
+
+#####Como aplicar:
+2. Crie o PersistentVolume:
+kubectl apply -f persistentvolume.yaml
+
+3. Crie o PersistentVolumeClaim:
+kubectl apply -f persistentvolumeclaim.yaml
+
+4. Crie o Pod:
+kubectl apply -f nginx-pod.yaml
+
+#Benefícios:
+Mesmo que o pod seja deletado, o volume e os arquivos dentro dele persistirão, pois o PV existe de forma independente do ciclo de vida do pod.
+Essa solução é mais portável e escalável, adequada para ambientes de produção.
