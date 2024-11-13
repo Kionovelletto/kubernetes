@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "abc@123"  # Substitua pela senha desejada para o usuário root
+            - name: MYSQL_DATABASE
+              value: "meudb01"  # Substitua pelo nome do banco de dados desejado
+            - name: MYSQL_USER
+              value: "kio"  # Substitua pelo nome do usuário desejado
+            - name: MYSQL_PASSWORD
+              value: "abc@567"  # Substitua pela senha desejada para o usuário
+          volumeMounts:
+            - mountPath: "/var/lib/mysql"
+              name: mysql-storage
+              subPath: ""  # Preserva dados no volume mesmo após exclusão do pod
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  type: NodePort  # Para acesso externo; ou use ClusterIP para acesso apenas dentro do cluster
+  ports:
+    - port: 3306
+      targetPort: 3306
+      nodePort: 30033  # Porta do nó para acesso externo, altere conforme necessário
