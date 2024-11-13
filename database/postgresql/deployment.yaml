@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/c/Users/kio/Documents/kubernetes/database/postgreqsl/postgres-data"  # Altere para o diretório desejado
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "kio"  # Substitua pelo nome do usuário desejado
+            - name: POSTGRES_PASSWORD
+              value: "abc@123"  # Substitua pela senha desejada
+            - name: POSTGRES_DB
+              value: "meu_banco01"    # Substitua pelo nome do banco desejado
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: postgres-storage
+              subPath: ""  # Isso preserva os dados no volume, mesmo após exclusão do pod
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  selector:
+    app: postgres
+  type: NodePort  # Para acesso externo; ou use ClusterIP para acesso apenas dentro do cluster
+  ports:
+    - port: 5432
+      targetPort: 5432
+      nodePort: 30032  # Porta do nó para acessar externamente (altere conforme necessário)
