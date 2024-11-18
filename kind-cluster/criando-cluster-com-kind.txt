@@ -1,5 +1,15 @@
 # URL https://kind.sigs.k8s.io/docs/user/quick-start/
 
+# Baixe o binário:
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
+
+# Torne-o executável:
+chmod +x ./kind
+
+# Mova para o path:
+sudo mv ./kind /usr/local/bin/kind
+
+
 # PRECISAR TER O DOCKER INSTALADO, POIS O KIND VAI RODAR O CLUSTER EM DOCKER
 
 # CREATE CLUSTER
